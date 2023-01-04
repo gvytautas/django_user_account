@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, reverse
 from .forms import SignUpForm, UpdateUserForm
+from django.contrib import messages
 
 
 # Create your views here.
@@ -8,8 +9,10 @@ def sign_up(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Registration succeeded. You can login now.')
             return redirect(reverse('index'))
-        return redirect(reverse('sign_up'))
+        messages.error(request, 'Form data not valid.')
+        return render(request, 'registration/sign_up.html', context={'form': form})
     else:
         form = SignUpForm()
     return render(request, 'registration/sign_up.html', context={'form': form})

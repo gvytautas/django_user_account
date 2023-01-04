@@ -1,4 +1,5 @@
 from django.db import models
+from authentication.models import User
 
 
 # Create your models here.
@@ -22,8 +23,10 @@ class Service(models.Model):
 class Vehicle(models.Model):
     plate_number = models.CharField(max_length=50, null=False, blank=False)
     win_number = models.CharField(max_length=50, null=False, blank=False)
-    client = models.CharField(max_length=50, null=False, blank=False)
+    client = models.ForeignKey(User, on_delete=models.CASCADE)
     model = models.ForeignKey(VehicleModel, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='vehicles/', null=True, blank=True)
+    date_created = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.win_number
